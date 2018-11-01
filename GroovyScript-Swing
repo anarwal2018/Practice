@@ -1,0 +1,28 @@
+import groovy.swing.SwingBuilder 
+import javax.swing.JOptionPane 
+
+def myTestCase = context.testCase
+// Compose the builder 
+propTestStep = myTestCase.getTestStepByName("Properties")
+
+ActualMT = "" 
+AOTAKey = ""
+new SwingBuilder().edt { 
+    ExpectedMT = JOptionPane.showInputDialog(null, 'Enter the Expected MT') 
+    ActualMT = JOptionPane.showInputDialog(null, 'Enter the Actual MT from SMSC') 
+    AOTAKey = JOptionPane.showInputDialog(null, 'Enter AOTA Key - Decrypted') 
+} 
+
+log.info ActualMT
+log.info AOTAKey
+log.info ExpectedMT
+
+propTestStep.setPropertyValue("ActualMT", ActualMT.toString())
+propTestStep.setPropertyValue("AOTAKey", AOTAKey.toString())
+
+if (ActualMT.toString() == ExpectedMT.toString())
+	com.eviware.soapui.support.UISupport.showInfoMessage('MT SENT IS VALID')
+else
+	com.eviware.soapui.support.UISupport.showInfoMessage('MT SENT IS INVALID')
+
+
